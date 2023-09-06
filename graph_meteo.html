@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+
+    <header>
+      <img src="logo.jpg" alt="logo">
+      <h1>Monitoring de conduite accompagnee</h1>
+    </header>
+    <nav><button class="nav-button" id="nav-experience" type="button">New experience</button>
+		<button class="nav-button" id="nav-records" type="button">Records</button>
+    <!--
+      <button class="nav-button" id="nav-graph" type="button">Graph</button>
+  -->
+      <button class="nav-button" id="nav-graph" type="button">
+          Graphs
+          <span class="dropdown-content">
+          <a href="graph_distance.html">Distance</a>
+          <a href="graph_meteo.html">Meteo</a>
+          <a href="graph_man.html">Manoeuvre</a>
+          <a href="graph_trajet.html">Trajet</a>
+          </span>
+  </button>	  
+  <button class="nav-button" id="nav-map" type="button">Map</button>
+
+</nav>
+    <article>
+        <h4 id="graph-titre"></h4>
+        <canvas id="myChart"></canvas>
+
+   </article>
+
+    <footer>Application Web creee par Sitara<p>sitaraliang@gmail.com</p></footer>
+    <script>
+
+      const experience_button = document.querySelector('#nav-experience');
+      const records_button = document.querySelector('#nav-records');
+      const map_button = document.querySelector('#nav-map');
+      experience_button.onclick = () => {
+          window.location.replace("index.html");
+        }
+      
+      records_button.onclick = () => {
+          window.location.replace("records.html");
+        }
+      
+      map_button.onclick = () => {
+          window.location.replace("map.html");
+      }
+      
+
+        const lst = localStorage.getItem("listeExperience");
+        const lst_text = JSON.parse(lst);
+        let listeMeteo = [{"idMeteo":"1","condition":"ensoleille"},{"idMeteo":"2","condition":"nuageux"},{"idMeteo":"3","condition":"pluvieux"},{"idMeteo":"4","condition":"venteux"},{"idMeteo":"5","condition":"neigeux"}];
+        let meteo_jour = [0,0,0,0,0];
+        let x = 0;
+        if (lst_text != "" && lst_text != null) {
+          listeMeteo.forEach(item => {
+              for (let i = 0; i < lst_text.length; i++) {
+                  if (item.idMeteo == lst_text[i].meteo) {
+                      meteo_jour[x] += 1;
+                  }
+              }
+              x++;
+            });
+
+/*
+
+      const lst = localStorage.getItem("listeExperience");
+      const lst_text = JSON.parse(lst);
+      let listeMeteo = [{"idMeteo":"1","condition":"ensoleille"},{"idMeteo":"2","condition":"nuageux"},{"idMeteo":"3","condition":"pluvieux"},{"idMeteo":"4","condition":"venteux"},{"idMeteo":"5","condition":"neigeux"}];
+      let meteo_jour = [0,0,0,0,0];
+      let x = 0;
+      if (lst_text != "" && lst_text != null) {
+        listeMeteo.forEach(item => {
+            for (let i = 0; i < lst_text.length; i++) {
+                if (item.idMeteo == lst_text[i].meteo) {
+                    meteo_jour[x] += 1;
+                }
+            }
+            x++;
+          });
+*/
+
+        const subHead = document.getElementById('graph-titre');
+        subHead.classList.toggle('hide');
+
+
+        const ctx = document.getElementById('myChart');
+
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ["ensoleille", "nuageux", "pluvieux", "venteux", "neigeux"],
+            datasets: [{
+              label: 'Nombre experiences',
+              data: meteo_jour,
+              borderWidth: 1,
+              backgroundColor: ["#bf97c9","#c0d4b8","#b3ace8","#f7cbf4", "#5f5fad"]
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: "Nombre de experience",
+                    
+                  },
+
+                  ticks: {
+                    stepSize: 1
+                  }
+              },
+              x: {
+                title: {
+                    display: true,
+                    text: 'Meteo'
+                  }
+            }
+            }
+  
+          }
+        });
+
+      } else {
+        const subHead = document.getElementById('graph-titre');
+        subHead.classList.toggle('graph-titre');
+        subHead.innerHTML = "Veuillez enregistrer une nouvelle experience";
+      }
+
+
+    </script>
+     
+	
+</body>
+</html>

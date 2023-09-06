@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+
+  </style>
+</head>
+<body>
+
+    <header>
+      <img src="logo.jpg" alt="logo">
+      <h1>Monitoring de conduite accompagnee</h1>
+    </header>
+    <nav><button class="nav-button" id="nav-experience" type="button">New experience</button>
+		<button class="nav-button" id="nav-records" type="button">Records</button>
+        <!--
+            <button class="nav-button" id="nav-graph" type="button">Graph</button>
+        -->
+        <button class="nav-button" id="nav-graph" type="button">
+          Graphs
+          <span class="dropdown-content">
+          <a href="graph_distance.html">Distance</a>
+          <a href="graph_meteo.html">Meteo</a>
+          <a href="graph_man.html">Manoeuvre</a>
+          <a href="graph_trajet.html">Trajet</a>
+          </span>
+  </button>
+  <button class="nav-button" id="nav-map" type="button">Map</button>
+	  </nav>
+
+
+    <article id="map-container">
+        <h4 id="map-titre"></h4><br>
+        <section id="surveillance-btn">
+            <button id="start-btn" class="bouton">Demarrer</button>
+            <button id="stop-btn" class="bouton">Arreter</button>
+        </section><br>
+        <section id="conduite-info"></section>
+        <div id="map"></div>
+   </article>
+
+
+
+
+    <footer>Application Web creee par Sitara<p>sitaraliang@gmail.com</p></footer>
+    
+    <script>
+
+      const experience_button = document.querySelector('#nav-experience');
+      const records_button = document.querySelector('#nav-records');
+      const map_button = document.querySelector('#nav-map');
+      experience_button.onclick = () => {
+          window.location.replace("index.html");
+        }
+      
+      records_button.onclick = () => {
+          window.location.replace("records.html");
+        }
+
+      map_button.onclick = () => {
+          window.location.replace("map.html");
+      }
+
+    </script>
+
+    <script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+        ({key: "AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg", v: "beta"});</script>
+
+    <script>
+
+    let map;
+
+    const head = document.getElementById('map-titre');
+    head.innerHTML = "Map loading...";
+    
+    async function initMap() {
+        const { Map } = await google.maps.importLibrary("maps");
+        const { AdvancedMarkerView } = await google.maps.importLibrary("marker");
+
+        navigator.geolocation.getCurrentPosition(position => {
+            const pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            };
+        head.innerText = "";
+        let text = `Latitude:${pos.lat} Longitude:${pos.lng}`;
+        newTextNode = document.createTextNode(text);
+        head.appendChild(newTextNode);
+
+        const startBtn = document.getElementById('start-btn');
+        const stopBtn = document.getElementById('stop-btn');
+
+        startBtn.onclick = () => {
+            let distance = 0;
+            const watchId = navigator.geolocation.watchPosition(position => {
+                const new_pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                  };
+                distance = calculateDis(pos.lat, pos.lgn, new_pos.lat, new_pos.lgn);
+                subhead.innerHTML = `Latitude:${new_pos.lat} Longitude:${new_pos.lng}`;
+            })
+            head.innerHTML = `Distance: ${distance} km`;
+            stopBtn.onclick = () => {
+                navigator.geolocation.clearWatch(watchId);
+                head.innerHTML = "Surveillance automatisee de la conduite";
+            }
+        }
+
+
+        map = new Map(document.getElementById("map"), {
+            zoom: 16,
+            center: pos,
+            mapId: "DEMO_MAP_ID",
+        });
+    
+        const marker = new google.maps.Marker({
+            position: pos,
+            map: map,
+            animation: google.maps.Animation.DROP
+        });
+    
+        const infoWindow = new google.maps.InfoWindow({
+            content: "",
+            disableAutoPan: true,
+        });
+
+        marker.addListener("click", () => {
+            infoWindow.setContent("Current Location");
+            infoWindow.open(map, marker);
+        });
+    })
+
+
+    
+    }
+    
+
+    initMap();
+
+
+    function calculateDis(lat1, lon1, lat2, lon2) 
+    {
+      var R = 6371; // km
+      var dLat = toRad(lat2-lat1);
+      var dLon = toRad(lon2-lon1);
+      var lat1 = toRad(lat1);
+      var lat2 = toRad(lat2);
+
+      var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+      var d = R * c;
+      return d;
+    }
+
+    // Converts numeric degrees to radians
+    function toRad(Value) 
+    {
+        return Value * Math.PI / 180;
+    }
+
+
+
+
+
+    </script>
+
+	
+</body>
+</html>

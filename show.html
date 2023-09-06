@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+  <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+    <header>
+      <img src="logo.jpg" alt="logo">
+      <h1>Monitoring de conduite accompagnee</h1>
+    </header>
+    <nav>
+		<button class="nav-button" id="nav-back" type="button">Retour</button>
+	  </nav>
+    <article>
+        
+   </article>
+
+    <footer>Application Web creee par Sitara<p>sitaraliang@gmail.com</p></footer>
+    
+	<script>
+    let listeMeteo = [{"idMeteo":"1","condition":"ensoleille"},{"idMeteo":"2","condition":"nuageux"},{"idMeteo":"3","condition":"pluvieux"},{"idMeteo":"4","condition":"venteux"},{"idMeteo":"5","condition":"neigeux"}];
+    let listeManouevre = [{"idManoeuvre":"1","description":"Arret et freinage de precision"},{"idManoeuvre":"2","description":"Marche arriere en ligne droite"},{"idManoeuvre":"3","description":"Marche arriere en courbe"},{"idManoeuvre":"4","description":"Se garer en creneau"},{"idManoeuvre":"5","description":"Rangement en epi"},{"idManoeuvre":"6","description":"stationnement en bataille avant"},{"idManoeuvre":"7","description":"stationnement en bataille arriere"}];
+    let listeTrajet = [{"idTrajet":"1","trajet":"chemin"},{"idTrajet":"2","trajet":"rue"},{"idTrajet":"3","trajet":"route"},{"idTrajet":"4","trajet":"autoroute"},{"idTrajet":"5","trajet":"peripherique"}];
+
+        const back_button = document.querySelector('#nav-back');
+        back_button.onclick = () => {
+            window.location.replace("records.html");
+          }
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const i = urlParams.get('i')
+        const lst = localStorage.getItem("listeExperience");
+        const lst_text = JSON.parse(lst);
+        
+        //head
+        let title = document.createElement('h3');
+        title.classList.add('title');
+        let text = "Detail de l'experience";
+        textNode = document.createTextNode("Detail de l'experience");
+        title.appendChild(textNode);
+        document.querySelector('article').appendChild(title);
+        
+        let htmlTable = document.createElement('table');
+        let newTR;
+        let newTD;
+        let newText;
+        htmlTable.classList.add('table-show');
+
+        //begin
+        newTR = document.createElement('tr');
+        newTR.classList.add('tr')
+        newTD = document.createElement('td');
+        newTD.classList.add('td-show');
+        newTD.innerText = "Date";
+        newTR.appendChild(newTD);
+        newTD = document.createElement('td');
+        newText = document.createTextNode(lst_text[i].date);
+        newTD.classList.add('td-show');
+        newTD.appendChild(newText);
+        newTR.appendChild(newTD);
+        htmlTable.appendChild(newTR);
+      
+        newTR = document.createElement('tr');
+        newTR.classList.add('tr')
+        newTD = document.createElement('td');
+        newTD.classList.add('td-show');
+        newTD.innerText = "Heure de depart";
+        newTR.appendChild(newTD);
+        newTD = document.createElement('td');
+        newText = document.createTextNode(lst_text[i].heureDepart);
+        newTD.classList.add('td-show');
+        newTD.appendChild(newText);
+        newTR.appendChild(newTD);
+        htmlTable.appendChild(newTR);
+
+        newTR = document.createElement('tr');
+        newTR.classList.add('tr')
+        newTD = document.createElement('td');
+        newTD.classList.add('td-show');
+        newTD.innerText = "Heure d'Arrivee";
+        newTR.appendChild(newTD);
+        newTD = document.createElement('td');
+        newText = document.createTextNode(lst_text[i].heureArrive);
+        newTD.classList.add('td-show');
+        newTD.appendChild(newText);
+        newTR.appendChild(newTD);
+        htmlTable.appendChild(newTR);
+
+        newTR = document.createElement('tr');
+        newTR.classList.add('tr')
+        newTD = document.createElement('td');
+        newTD.classList.add('td-show');
+        newTD.innerText = "Distance";
+        newTR.appendChild(newTD);
+        newTD = document.createElement('td');
+        newText = document.createTextNode(lst_text[i].distance);
+        newTD.classList.add('td-show');
+        newTD.appendChild(newText);
+        newTR.appendChild(newTD);
+        htmlTable.appendChild(newTR);
+
+        newTR = document.createElement('tr');
+        newTR.classList.add('tr')
+        newTD = document.createElement('td');
+        newTD.classList.add('td-show');
+        newTD.innerText = "Meteo";
+        newTR.appendChild(newTD);
+        newTD = document.createElement('td');
+        let n = lst_text[i].meteo;
+        let meteo = listeMeteo[n-1].condition;
+        console.log(meteo);
+        newText = document.createTextNode(meteo);
+        newTD.classList.add('td-show');
+        newTD.appendChild(newText);
+        newTR.appendChild(newTD);
+        htmlTable.appendChild(newTR);
+
+        newTR = document.createElement('tr');
+        newTR.classList.add('tr')
+        newTD = document.createElement('td');
+        newTD.classList.add('td-show');
+        newTD.innerText = "Manoeuvre";
+        newTR.appendChild(newTD);
+        newTD = document.createElement('td');
+        let m = lst_text[i].manoeuvre;
+        let manoeuvre = listeManouevre[n-1].description;
+        newText = document.createTextNode(manoeuvre);
+        newTD.classList.add('td-showtd-show');
+        newTD.appendChild(newText);
+        newTR.appendChild(newTD);
+        htmlTable.appendChild(newTR);
+
+        newTR = document.createElement('tr');
+        newTR.classList.add('tr')
+        newTD = document.createElement('td');
+        newTD.classList.add('td-show');
+        newTD.innerText = "Trajet";
+        newTR.appendChild(newTD);
+        newTD = document.createElement('td');
+        newTD.classList.add('td-show');
+        let arr = lst_text[i].trajet;
+        let newUL = document.createElement("ul");
+        newUL.classList.add('ul');
+        for (let i = 0; i < arr.length; i++) {
+          var node = document.createElement("li");
+          node.classList.add('li');
+          let text = listeTrajet[arr[i]-1].trajet;
+          var textnode = document.createTextNode(text);
+          node.appendChild(textnode);
+          newUL.appendChild(node);
+        }
+        newTD.appendChild(newUL);
+        newTR.appendChild(newTD);
+        htmlTable.appendChild(newTR);
+        document.querySelector('article').appendChild(htmlTable);
+
+        /*
+
+        let trajet_nom = "";
+        for (let i = 0; i < arr.length; i++) {
+          trajet_nom += listeManouevre[arr[i]-1].description;
+          trajet_nom += "\n";
+        }
+        
+        newText = document.createTextNode(trajet_nom);
+        newTD.classList.add('td');
+        newTD.appendChild(newText);
+        newTR.appendChild(newTD);
+        htmlTable.appendChild(newTR);
+        document.querySelector('article').appendChild(htmlTable);
+        */
+
+
+    </script>
+</body>
+</html>

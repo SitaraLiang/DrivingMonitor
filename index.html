@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src="script.js" defer></script>
+
+</head>
+<body>
+
+    <header>
+      <img src="logo.jpg" alt="logo">
+      <h1>Monitoring de conduite accompagnee</h1>
+    </header>
+    <nav><button class="nav-button" id="nav-experience" type="button">New experience</button>
+		<button class="nav-button" id="nav-records" type="button">Records</button>
+        <!--
+            <button class="nav-button" id="nav-graph" type="button">Graph</button>
+        -->
+            <button class="nav-button" id="nav-graph" type="button">
+                Graphs
+                <span class="dropdown-content">
+                <a href="graph_distance.html">Distance</a>
+                <a href="graph_meteo.html">Meteo</a>
+                <a href="graph_man.html">Manoeuvre</a>
+                <a href="graph_trajet.html">Trajet</a>
+                </span>
+        </button>
+        <button class="nav-button" id="nav-map" type="button">Map</button>
+
+	  </nav>
+    <article>
+        <form id="form">
+            <div class="msg"></div>
+            <input type="hidden" name="code" value="1">
+            <fieldset id="fieldset">
+                <legend>Experience</legend>
+    
+            <span class="champ1">Date de conduite accompagnee</span>&nbsp;&nbsp;<input type="date" name="date" id="date"><br>
+
+            <span class="champ1">Heure de depart</span>&nbsp;&nbsp;<input type="time" name="heureDepart" id="depart-heure" placeholder="00:00" /><br>
+            <span class="champ1">Heure d'arrivee</span>&nbsp;&nbsp;<input type="time" name="heureArrive" id="arrivee-heure" placeholder="00:00" /><br>
+            <span class="champ1">Distance(km)</span>&nbsp;&nbsp;<input type="number" name="distance" id="distance" placeholder="0 km" min="0000" max="9999" step="1" /><br>
+            
+            <!--
+            <span class="champ1">Meteo</span><br>
+            <label for="radio1" >ensoleille</label>
+            <input type="radio" name="meteo" id="radio1" value="1">
+            <label for="radio2">nuageux</label>
+            <input type="radio" name="meteo" id="radio2" value="2">
+            <label for="radio3">pluvieux</label>
+            <input type="radio" name="meteo" id="radio3" value="3">
+            <label for="radio4">venteux</label>
+            <input type="radio" name="meteo" id="radio4" value="4">
+            <label for="radio5">neigeux</label>
+            <input type="radio" name="meteo" id="radio5" value="5">
+            <br>
+            -->
+            <!--
+            <span class="champ1">Manoeuvre particuliere</span><br>
+                <select name="listManoeuvre" required>
+                    <option value="">-- Choose --</option>
+                    <option value="1">Arret et freinage de precision</option>
+                    <option value="2">Marche arriere en ligne droite</option>
+                    <option value="3">Marche arriere en courbe</option>
+                    <option value="4">Se garer en creneau</option>
+                    <option value="5">Rangement en epi</option>
+                    <option value="6">stationnement en bataille avant</option>
+                    <option value="7">stationnement en bataille arriere</option>
+                    </select><br>
+            -->
+
+            <!--
+                <span class="champ1">Trajet</span><br>
+                  <button id="autoButton" type="button" onclick="clickAuto(1)">All</button> 
+                  <button id="autoButton" type="button" onclick="clickAuto(-1)">None</button><br> 
+                  <label for="check1">Chemin</label>
+                  <input type="checkbox" name="check[]" value="1" id="check1">&nbsp;
+                  <label for="check2">Rue</label>
+                  <input type="checkbox" name="check[]" value="2" id="check2">&nbsp;
+                  <label for="check3">Route</label>
+                  <input type="checkbox" name="check[]" value="3" id="check3">&nbsp;
+                  <label for="check4">Autoroute</label>
+                  <input type="checkbox" name="check[]" value="4" id="check4">&nbsp;
+                  <label for="check5">Peripherique</label>
+                  <input type="checkbox" name="check[]" value="5" id="check5">
+            -->
+                                
+            
+            </fieldset><br>
+            <button class="bouton" type="submit" id="bouton">Enrigistre</button><br> 
+    </form>  
+    <ul id="ul">
+
+    </ul>          
+   </article>
+
+    <footer>Application Web creee par Sitara<p>sitaraliang@gmail.com</p></footer>
+    
+	
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+
+    <header>
+      <img src="logo.jpg" alt="logo">
+      <h1>Monitoring de conduite accompagnee</h1>
+    </header>
+    <nav><button class="nav-button" id="nav-experience" type="button">New experience</button>
+		<button class="nav-button" id="nav-records" type="button">Records</button>
+        <!--
+            <button class="nav-button" id="nav-graph" type="button">Graph</button>
+        -->
+        <button class="nav-button" id="nav-graph" type="button">
+          Graphs
+          <span class="dropdown-content">
+          <a href="graph_distance.html">Distance</a>
+          <a href="graph_meteo.html">Meteo</a>
+          <a href="graph_man.html">Manoeuvre</a>
+          <a href="graph_trajet.html">Trajet</a>
+          </span>
+  </button>
+  <button class="nav-button" id="nav-map" type="button">Map</button>
+	  </nav>
+    <article>
+        <h4 id="distance-titre"></h4>
+        <h4 id="graph-titre"></h4>
+        <canvas id="myChart"></canvas>
+
+   </article>
+
+    <footer>Application Web creee par Sitara<p>sitaraliang@gmail.com</p></footer>
+    <script>
+
+      const experience_button = document.querySelector('#nav-experience');
+      const records_button = document.querySelector('#nav-records');
+      const map_button = document.querySelector('#nav-map');
+      experience_button.onclick = () => {
+          window.location.replace("index.html");
+        }
+      
+      records_button.onclick = () => {
+          window.location.replace("records.html");
+        }
+
+      map_button.onclick = () => {
+          window.location.replace("map.html");
+      }
+      
+      const head = document.getElementById('distance-titre');
+      const subHead = document.getElementById('graph-titre');
+      subHead.classList.toggle('hide');
+
+
+
+      const lst = localStorage.getItem("listeExperience");
+      const lst_text = JSON.parse(lst);
+      let listeDistance = new Array;
+      let listeDate = new Array;
+      var flag = false;
+      if (lst_text != "" && lst_text != null) {
+        lst_text.forEach(item => {
+          if (listeDate != null && listeDistance != null) {
+            for (let i = 0; i < listeDate.length; i++) {
+              if (item.date == listeDate[i]) {
+                  let n = parseInt(listeDistance[i]);
+                  n += parseInt(item.distance);
+                  listeDistance[i] = n;
+                  flag = true;
+              }
+            }
+            if (flag == false) {
+              listeDate.push(item.date);
+              listeDistance.push(item.distance);
+            }
+          } else {
+            listeDate.push(item.date);
+            listeDistance.push(item.distance);
+          }
+          flag = false;
+        });
+
+        let somme_distance = 0;
+        listeDistance.forEach(item => {
+          somme_distance += parseInt(item);
+        });
+        head.innerHTML = `Distance Totale: ${somme_distance} km`;
+
+
+
+        const ctx = document.getElementById('myChart');
+
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: listeDate,
+            datasets: [{
+              label: 'Distance/km',
+              data: listeDistance,
+              borderWidth: 1,
+              borderColor:"#11115b",
+              backgroundColor: "#11115b"
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              },
+              x: {
+                ticks: {
+                    display: false
+                }
+            }
+            }
+  
+          }
+        });
+
+      } else {        
+        head.innerHTML = "Distance Totale: 0 km";
+        subHead.classList.toggle('graph-titre');
+        subHead.innerHTML = "Veuillez enregistrer une nouvelle experience";
+      }
+
+
+    </script>
+     
+	
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src="script2.js" defer></script>
+
+</head>
+<body>
+
+    <header>
+      <img src="logo.jpg" alt="logo">
+      <h1>Monitoring de conduite accompagnee</h1>
+    </header>
+    <nav><button class="nav-button" id="nav-experience" type="button">New experience</button>
+		<button class="nav-button" id="nav-records" type="button">Records</button>
+        <!--
+            <button class="nav-button" id="nav-graph" type="button">Graph</button>
+        -->
+        <button class="nav-button" id="nav-graph" type="button">
+          Graphs
+          <span class="dropdown-content">
+          <a href="graph_distance.html">Distance</a>
+          <a href="graph_meteo.html">Meteo</a>
+          <a href="graph_man.html">Manoeuvre</a>
+          <a href="graph_trajet.html">Trajet</a>
+          </span>
+  </button>
+  <button class="nav-button" id="nav-map" type="button">Map</button>
+	  </nav>
+    <article>
+      <h3>Cherche une experience</h3><input type="text" id="cherche-experience" onkeyup="myFunction()" placeholder="Saisir une date..."><br><br>
+   </article>
+
+    <footer>Application Web creee par Sitara<p>sitaraliang@gmail.com</p></footer>
+    
+    <script>
+      function myFunction() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("cherche-experience");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("table");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+          td = tr[i].getElementsByTagName("td")[0];
+          if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              tr[i].style.display = "";
+            } else {
+              tr[i].style.display = "none";
+            }
+          }       
+        }
+      }
+      </script>
+</body>
+</html>
